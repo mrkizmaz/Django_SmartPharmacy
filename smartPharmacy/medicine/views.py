@@ -1,14 +1,21 @@
-from django.shortcuts import render,redirect
+from email import message
+from django.shortcuts import render,redirect, get_object_or_404
 from medicine.forms import *
 from django.contrib import messages
 from medicine.models import Medicine, Patient
 from smartPharmacy import settings
 from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+
+# anasayfa
 def index(request):
     return render(request, 'index.html')
 
+# dashboard
+@login_required(login_url='user:login')
 def dashboard(request):
     medicines = Patient.objects.all()
     context={
@@ -16,6 +23,8 @@ def dashboard(request):
     }
     return render(request,"dashboard.html",context)
 
+# hasta sayfası
+@login_required(login_url='user:login')
 def addpatient(request):
     form=PatientForm(request.POST or None)
 
@@ -30,6 +39,8 @@ def addpatient(request):
 
     return render(request,"addpatient.html",{"form":form})
 
+# recete sayfası
+@login_required(login_url='user:login')
 def receteolustur(request):
     form=ReceteForm()
     if request.method=="POST":
@@ -44,6 +55,8 @@ def receteolustur(request):
     context={"form":form}
     return render(request,"receteolustur.html",context)
 
+# ilac listesi
+@login_required(login_url='user:login')
 def ilacListesi(request):
     ilaclar=Medicine.objects.all()
     context={
@@ -51,23 +64,24 @@ def ilacListesi(request):
     }
     return render(request,"ilaclistesi.html",context)
 
+# recete listesi
+@login_required(login_url='user:login')
 def receteListesi(request):
     recete=Recete.objects.filter()
 
-    
-    
     context={
         "recete":recete,
         
     }
     return render(request,"recetelistesi.html",context)
 
+# detay sayfası
+@login_required(login_url='user:login')
 def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()
+    medicine = get_object_or_404(Recete, id = id)
     message= Recete.objects.filter(id=id)
 
-
-    
     if request.method=="POST":
         mail= message.values_list('hasta__mail',flat=True).first()
         patient=message.values_list('hasta__first_name',flat=True).first()
@@ -93,11 +107,9 @@ def deTail(request,id):
 
         messages.success(request,"Mail başarıyla gönderildi")
         
-        
         return redirect("/medicines/dashboard/")
     context={
         "medicine":medicine,
-        
-             }
+        }
         
     return render(request,"detail.html",context)

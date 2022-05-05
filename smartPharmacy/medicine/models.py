@@ -17,6 +17,7 @@ class Medicine(models.Model):
     def __str__(self):
         return self.ilac_adi
 
+# hasta tablosu
 class Patient(models.Model):
     
     first_name=models.CharField(max_length=30,verbose_name="İsim")
@@ -28,6 +29,7 @@ class Patient(models.Model):
     def __str__(self):
         return self.first_name
 
+# recete tablosu
 class Recete(models.Model):
     hasta=models.ForeignKey(Patient,null=True,on_delete=models.SET_NULL)
     created_date=models.DateTimeField(auto_now=True)

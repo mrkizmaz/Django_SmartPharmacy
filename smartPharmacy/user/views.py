@@ -6,9 +6,11 @@ from django.contrib import messages
 
 # Create your views here.
 
-
+# register formu
 def register(request):
     form = RegisterForm(request.POST or None)
+
+    # kontrol islemleri
     if form.is_valid():
         username = form.cleaned_data.get('username')
         email = form.cleaned_data.get('email')
@@ -26,12 +28,14 @@ def register(request):
         
     context = {'form': form}
     return render(request, 'register.html', context)
-    
+
+# login formu    
 def loginUser(request):
     form = LoginForm(request.POST or None)
     
     context = {'form': form}
     
+    # kontrol islemleri
     if form.is_valid():
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
@@ -47,7 +51,8 @@ def loginUser(request):
     
     return render(request, 'login.html', context)    
 
+# logout islemi
 def logoutUser(request):
     logout(request)
-    messages.warning(request, message = 'Başarıyla çıkış yaptınız.')
+    messages.success(request, message = 'Başarıyla çıkış yaptınız.')
     return redirect('index')
