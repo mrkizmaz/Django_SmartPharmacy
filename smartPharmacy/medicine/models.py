@@ -63,12 +63,8 @@ class Recete(models.Model):
         
         return ret
     
-        
-    
     def save(self,*args,**kwargs):
 
-       
-        
         super(Recete,self).save(*args,**kwargs)
         qrcode_img=qrcode.make(self.get_tags_values2())
         canvas=Image.new('RGB', (qrcode_img.pixel_size, qrcode_img.pixel_size), 'white')

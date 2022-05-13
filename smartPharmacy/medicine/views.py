@@ -17,6 +17,12 @@ def index(request):
 # dashboard
 @login_required(login_url='user:login')
 def dashboard(request):
+
+    keyword = request.GET.get("keyword")
+    if keyword:
+        medicines = Patient.objects.filter(first_name__contains = keyword)
+        return render (request, "dashboard.html", {"medicines":medicines})
+
     medicines = Patient.objects.all()
     context={
         "medicines":medicines
@@ -39,6 +45,22 @@ def addpatient(request):
 
     return render(request,"addpatient.html",{"form":form})
 
+@login_required(login_url='user:login')
+def deletePatient(request, id):
+    patient = get_object_or_404(Patient, id = id)
+    patient.delete()
+    messages.success(request, 'Hasta başarıyla silindi.')
+
+    return redirect('medicine:dashboard')
+
+@login_required(login_url='user:login')
+def deleteRecete(request, id):
+    recete = get_object_or_404(Recete, id = id)
+    recete.delete()
+    messages.success(request, 'Reçete başarıyla silindi.')
+
+    return redirect('medicine:recetelistesi')
+
 # recete sayfası
 @login_required(login_url='user:login')
 def receteolustur(request):
@@ -50,7 +72,7 @@ def receteolustur(request):
             form.save()
             form.save()
             messages.success(request,"Reçete başarıyla oluşturuldu")
-            return redirect("/medicines/dashboard/")
+            return redirect("medicine:dashboard")
 
     context={"form":form}
     return render(request,"receteolustur.html",context)
@@ -88,7 +110,7 @@ def deTail(request,id):
         qr_code=message.values_list('qr_code',flat=True).first()
         total=message.values_list('toplam',flat=True).first()
         
-        filename = "/home/ersel/Desktop/smartPharmacy/uploads/" + qr_code
+        filename = "/home/ersel/Documents/GitHub/Django_SmartPharmacy/smartPharmacy/uploads/" + qr_code
         attachment = open(filename,'rb')
         subject='İlaçlarınızı eczane otomatından almayı unutmayınız.\nToplam Tutar: {} TL'.format(total)
         msg = EmailMultiAlternatives(
@@ -107,7 +129,7 @@ def deTail(request,id):
 
         messages.success(request,"Mail başarıyla gönderildi")
         
-        return redirect("/medicines/dashboard/")
+        return redirect("medicine:dashboard")
     context={
         "medicine":medicine,
         }

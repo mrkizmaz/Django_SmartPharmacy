@@ -11,7 +11,8 @@
       <th scope="col">Mail Adresi</th>
       <th scope="col">İlaçlar</th>
       <th scope="col">Tutar (TL)</th>
-      <th scope="col">Mail</th>
+      <th scope="col">Detay</th>
+      <th scope="col">Sil</th>
     </tr>
   </thead>
   <tbody>
@@ -24,21 +25,16 @@
       <td>{{i.get_tags_values}}</td>
       <td>{{i.get_ilacfiyati}}</td>
       
-      <td><a href="/medicines/medicine/{{i.id}}"><button class="btn btn-success"><b>Detay</b></button></td>
+      <td><a href="{% url 'medicine:detail' i.id %}"><button class="btn btn-success"><b>Detay</b></button></td>
+      <td><a href="{% url 'medicine:deleterecete' i.id %}" class="btn btn-danger">Sil</a></td>
       
-      
-    
     </tr>
   {% endfor %}
-    
     
   </tbody>
 </table>
 {% else %}
 <div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
 {% endif %}
-
-
-
 
 {% endblock body %}

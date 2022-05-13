@@ -11,17 +11,20 @@
     </div>
   </div><br>
     <div class="col-md-10 offset-md-1">
-      <span><a class="btn btn-outline-primary" href="/medicines/addpatient">Hasta Kaydı Oluştur</a></span>
-      <span><a class="btn btn-outline-success" href="/medicines/receteolustur">Reçete Yaz</a></span>
-      <span><a class="btn btn-outline-danger" href="/medicines/ilaclistesi">İlaç Listesi</a></span>
-      <span><a class="btn btn-outline-info" href="/medicines/recetelistesi">Reçete Listesi</a></span>
+      <span><a class="btn btn-outline-primary" href="{% url 'medicine:addpatient' %}">Hasta Kaydı Oluştur</a></span>
+      <span><a class="btn btn-outline-success" href="{% url 'medicine:receteolustur' %}">Reçete Yaz</a></span>
+      <span><a class="btn btn-outline-danger" href="{% url 'medicine:ilaclistesi' %}">İlaç Listesi</a></span>
+      <span><a class="btn btn-outline-info" href="{% url 'medicine:recetelistesi' %}">Reçete Listesi</a></span>
       <br><br>
       <h3 style="text-align:center; font-weight:bold">Kayıtlı Hastalar</h3>
 
+  <form>
+  {% csrf_token %}
   <div class="input-group p-1 pb-3 justify-content-center align-items-center">
-  <input type="search" class="form-control rounded" placeholder="Hasta ara..." aria-label="Search" aria-describedby="search-addon" />
-  <button type="button" class="btn btn-outline-primary">Ara</button>
+  <input type="search" name="keyword" class="form-control rounded" placeholder="Hasta ara...">
+  <button type="submit" class="btn btn-outline-primary">Ara</button>
   </div>
+  </form>
   </div>
 
   {% if medicines %}
@@ -42,7 +45,8 @@
           <td>{{i.first_name}}</td>
           <td>{{i.last_name}}</td>
           <td>{{i.mail}}</td>
-          <td><a href="/articles/delete/{{article.id}}" class="btn btn-danger">Sil</a></td>
+
+          <td><a href="{% url 'medicine:delete' i.id %}" class="btn btn-danger">Sil</a></td>
         </tr>
         {% endfor %}
       
@@ -50,7 +54,7 @@
     </table>
 
   {% else %}
-  <div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
+  <div class="alert alert-danger">Herhangi bir hasta kaydı bulunamadı!</div>
   {% endif %}
 
 </div>
