@@ -1,13 +1,18 @@
 {% extends "layout.html" %}
 
+{% block title %}Reçete Sayfası{% endblock title %}
+
 {% block body %}
+
+<div class="col-md-6 offset-md-3">
 {% load crispy_forms_tags %}
 <form action="" method="POST">
 {% csrf_token %}
 {{form|crispy}}
 
-<button type="submit" class ="btn btn-danger">Kaydet</button>
+<button type="submit" class ="btn btn-info">Kaydet</button>
 </form>
 
+</div>
 {% endblock body %}
 

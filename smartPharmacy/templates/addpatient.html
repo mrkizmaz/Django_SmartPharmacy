@@ -1,22 +1,21 @@
 {% extends "layout.html" %}
 
+{% block title %}Hasta Kayıt Sayfası{% endblock title %}
+
 {% block body %}
 {% load crispy_forms_tags %}
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <h3>Hasta Kaydı</h3>
     <hr>
-  <form method="post">
+    <form method="post">
 
     {% csrf_token %}
     {{form|crispy}}
     <br>
-    <button type="submit" class ="btn btn-danger">Kaydet</button>
-
-
+    <div class="text-center"><button type="submit" class ="btn btn-danger" style="width: 122px;"><b>Kaydet</b></button></div>
     </form>
-  
-  
+
   </div>
 </div>
 

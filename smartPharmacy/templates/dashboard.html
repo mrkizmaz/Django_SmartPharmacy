@@ -10,9 +10,8 @@
     <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"><b>HASTA KAYIT FORMU</b></h4>
     </div>
   </div><br>
-    <div class="col-md-10 offset-md-1">
+    <div class="col-md-8 offset-md-2">
       <span><a class="btn btn-outline-primary" href="{% url 'medicine:addpatient' %}">Hasta Kaydı Oluştur</a></span>
-      <span><a class="btn btn-outline-success" href="{% url 'medicine:receteolustur' %}">Reçete Yaz</a></span>
       <span><a class="btn btn-outline-danger" href="{% url 'medicine:ilaclistesi' %}">İlaç Listesi</a></span>
       <span><a class="btn btn-outline-info" href="{% url 'medicine:recetelistesi' %}">Reçete Listesi</a></span>
       <br><br>
@@ -35,6 +34,7 @@
           <th scope="col">İsim</th>
           <th scope="col">Soyisim</th>
           <th scope="col">Mail</th>
+          <th scope="col">Reçete Yaz</th>
           <th scope="col">Sil</th>
         </tr>
       </thead>
@@ -46,6 +46,7 @@
           <td>{{i.last_name}}</td>
           <td>{{i.mail}}</td>
 
+          <td><a href="{% url 'medicine:receteolustur' %}" class="btn btn-outline-success">Reçete Yaz</a></td>
           <td><a href="{% url 'medicine:delete' i.id %}" class="btn btn-danger">Sil</a></td>
         </tr>
         {% endfor %}

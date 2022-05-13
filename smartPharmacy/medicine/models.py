@@ -79,9 +79,7 @@ class Recete(models.Model):
         total=0
         for i in self.tags.all():
             total=total + i.ilacfiyati
-        self.toplam=total
-
-        
+        self.toplam=total  
         super(Recete,self).save(*args,**kwargs)
 
         

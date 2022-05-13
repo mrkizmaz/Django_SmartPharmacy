@@ -15,17 +15,17 @@
   <tbody>
   {% for i in ilaclar %}
   <tr>
-      <th scope="row">{{i.id}}</th>
-      <td>{{i.ilac_adi}}</td>
-      <td>{{i.prospekt}}</td>
-      <td>{{i.ilacfiyati}}</td>
+    <th scope="row">{{i.id}}</th>
+    <td>{{i.ilac_adi}}</td>
+    <td>{{i.prospekt}}</td>
+    <td>{{i.ilacfiyati}}</td>
       
     </tr>
   {% endfor %}
     
-    
   </tbody>
 </table>
+
 {% else %}
 <div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
 {% endif %}

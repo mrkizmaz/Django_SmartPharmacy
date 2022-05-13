@@ -9,7 +9,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
 # anasayfa
 def index(request):
     return render(request, 'index.html')
