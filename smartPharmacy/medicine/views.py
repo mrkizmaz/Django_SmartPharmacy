@@ -7,8 +7,13 @@ from smartPharmacy import settings
 from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.decorators import login_required
+from pathlib import Path
 
 # Create your views here.
+@login_required(login_url='user:login')
+def admin(request):
+    return render(request, 'index.html')
+
 # anasayfa
 def index(request):
     return render(request, 'index.html')
@@ -40,7 +45,7 @@ def addpatient(request):
         medicine.save()
 
         messages.success(request,"Hasta kaydı başarıyla oluşturuldu")
-        return redirect("/medicines/dashboard/")
+        return redirect("medicine:dashboard")
 
     return render(request,"addpatient.html",{"form":form})
 
@@ -98,11 +103,9 @@ def receteListesi(request):
 
 # detay sayfası
 @login_required(login_url='user:login')
-def deTail(request,id):
+def detail(request,id):
     medicine= Recete.objects.filter(id=id).first()
-    medicine = get_object_or_404(Recete, id = id)
     message= Recete.objects.filter(id=id)
-
     if request.method=="POST":
         mail= message.values_list('hasta__mail',flat=True).first()
         patient=message.values_list('hasta__first_name',flat=True).first()
@@ -110,27 +113,48 @@ def deTail(request,id):
         total=message.values_list('toplam',flat=True).first()
         
         filename = "/home/ersel/Documents/GitHub/Django_SmartPharmacy/smartPharmacy/uploads/" + qr_code
-        attachment = open(filename,'rb')
-        subject='İlaçlarınızı eczane otomatından almayı unutmayınız.\nToplam Tutar: {} TL'.format(total)
-        msg = EmailMultiAlternatives(
-            "Sayın,"+ patient +" Reçeteniz ",
+        image_name = Path(filename).name
+
+        subject = "İlaçlarınızı eczane otomatından almayı unutmayınız."
+        text_message = f"Email with a nice embedded image {image_name}."
+        html_message = f"""
+        <!doctype html>
+        <html lang=en>
+        <head>
+            <meta charset=utf-8>
+            <title>Some title.</title>
+        </head>
+        <body>
+            
+            <h2>{subject}</h2>
+            <p>
+            <h3 style="color:red;">Toplam Tutar: {total} ₺</h3>
+            Karekodunuz;
+            <br>
+            <img src='cid:{image_name}'/>
+            </p>
+        </body>
+        </html>
+        """
+        email=EmailMultiAlternatives(
+            "Sayın, " + patient +" reçeteniz hakkında",
             subject,
             settings.EMAIL_HOST_USER,
             [mail],
-            headers={'Message-ID': 'foo'},
         )
-        if attachment:
-            mime_image = MIMEImage(attachment.read())
-            mime_image.add_header('Content-ID', '<attachment>')
-            msg.attach(mime_image)
-       
-        msg.send()
+        if all([text_message,filename,image_name]):
+            email.attach_alternative(html_message, "text/html")
+            email.content_subtype = 'html'  
+            with open(filename, mode='rb') as f:
+                image = MIMEImage(f.read())
+                email.attach(image)
+                image.add_header('Content-ID', f"<{image_name}>")
+        email.send()
 
         messages.success(request,"Mail başarıyla gönderildi")
-        
-        return redirect("medicine:dashboard")
     context={
         "medicine":medicine,
-        }
+        
+             }
         
     return render(request,"detail.html",context)

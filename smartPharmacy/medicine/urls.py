@@ -11,7 +11,7 @@ urlpatterns = [
     path('receteolustur/', views.receteolustur, name = 'receteolustur'),
     path('ilaclistesi/', views.ilacListesi, name = 'ilaclistesi'),
     path('recetelistesi/', views.receteListesi, name = 'recetelistesi'),
-    path('detail/<int:id>', views.deTail,name="detail"),
+    path('detail/<int:id>', views.detail,name="detail"),
     path('delete/<int:id>', views.deletePatient, name="delete"),
     path('deleterecete/<int:id>', views.deleteRecete, name="deleterecete"),
 ]

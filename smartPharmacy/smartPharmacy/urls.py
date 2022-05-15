@@ -19,7 +19,8 @@ from django.urls import path, include
 from medicine import views
 from django.conf.urls.static import static
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('sp/', admin.site.urls),
+    path('admin/', views.admin, name = 'admin'),
     path('', views.index, name = 'index'),
     path('medicines/', include('medicine.urls')),
     path('user/', include('user.urls')),
