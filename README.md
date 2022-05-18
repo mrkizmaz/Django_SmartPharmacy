@@ -1,3 +1,3 @@
 # SmartPharmacy_App
-Smart Pharmacy Application <br>
+Smart Pharmacy Application
 Uygulama sitemizin linki --> https://smartpharmacy.pythonanywhere.com/
